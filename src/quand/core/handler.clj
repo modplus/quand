@@ -8,7 +8,9 @@
 
 (defn v [req]
   (def *r req)
-  "hello")
+  (str
+   "session token: " 
+   (-> req :cookies (get "ring-session") :value)))
 
 (defroutes app-routes
   (GET "/" [] landing/page)
@@ -17,3 +19,7 @@
 
 (def app
   (wrap-defaults app-routes site-defaults))
+
+(defn -main [& args]
+  (nrepl/start-server )
+  (jetty/run-jetty app {:port 10501}))
