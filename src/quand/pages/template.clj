@@ -5,10 +5,11 @@
 
 (defn page [content]
   (page/html5
+   
    (page/include-css "//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css")
    (page/include-js "//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js")
-
-
-   [:div.container content]))
+   (page/include-css "/freelancer.css")
+   (page/include-css "/style.css")
+   [:div.container content] ))
 
 

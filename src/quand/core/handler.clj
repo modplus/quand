@@ -2,16 +2,15 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
-            [quand.pages.landing :as landing]
-            [cider.nrepl :as nrepl]))
+            [quand.pages.landing :as landing]))
 
-(defn v [req]
+(defn checkout-req [req]
   (def *r req)
   "hello")
 
 (defroutes app-routes
   (GET "/" [] landing/page)
-  (GET "/create" [] v)
+  (GET "/create" [] checkout-req)
   (route/not-found "Not Found"))
 
 (def app

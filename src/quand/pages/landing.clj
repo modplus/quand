@@ -4,7 +4,7 @@
 
 (defn page [request]
   (t/page
-   [:div
+   [:div.jumbotron
     [:h2 "Welcome to quand."]
     [:form {:action "/create"}
      [:label "Name your room:"]
