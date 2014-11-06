@@ -6,8 +6,10 @@
   (t/page
    [:div.jumbotron
     [:h2 "Welcome to quand."]
-    [:form {:action "/create"}
+    [:form {:action "/create" :method "GET"}
      [:label "Name your room:"]
-     [:input {:type "text"}]
+     [:input {:type "text"
+              :name "title"
+              :placeholder "pick a name"}]
      [:br]
      [:input {:type "submit" :value "Create Room."}]]]))
