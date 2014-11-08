@@ -6,3 +6,9 @@
 body  {
 		font-size:5em;
 }
+
+#chat_box {
+float:left;
+width:100%;
+color:red;
+}
