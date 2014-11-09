@@ -8,7 +8,8 @@
                  [prone "0.6.0"]
                  [http-kit "2.1.16"]
                  [hiccup "1.0.5"]
-                 [org.clojure/tools.nrepl "0.2.3"]]
+                 [org.clojure/tools.nrepl "0.2.3"]
+                 [cheshire "5.3.1"]]
   :plugins [[lein-ring "0.8.13"]
             [cider/cider-nrepl "0.8.0-SNAPSHOT"]]
   :main quand.core.handler

@@ -1,23 +1,42 @@
 (ns quand.db
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [cheshire.core :as json]))
 
 ;; room-id is a key that maps top-level to a room.
 (defonce state (atom {}))
 
-(def room-names
-  (memoize
-   (fn []
-     (read-string (slurp "resources/room_names.txt")))))
+(defn ->json-state []
+  (json/encode @state))
+
+(defn ->json-room [room-id]
+  (json/encode (get @state room-id
+                    {:error (str "Sorry, no room called: "
+                                 room-id)})))
+
+(defn vote [room-id message-id user-id up-or-down]
+  (swap! state
+         #(update-in % [room-id :questions message-id up-or-down]
+                     (fn [votes] (conj votes user-id)))))
+
+(defn downvote [room-id message-id user-id]
+  (vote [room-id message-id user-id :downvotes]))
+
+(defn upvote [room-id message-id user-id]
+  (vote [room-id message-id user-id :upvotes]))
 
 (defn init-room [owner room-id]
   {:owner owner
    :room-id room-id
-   :title (rand-nth (room-names))
-   :questions []})
+   :questions {}})
 
-(defn new-question [message]
+(defn q->score [{:keys [upvotes downvotes]}]
+  (- upvotes downvotes))
+
+(defn new-question [message id]
   {:message message
-   :score 0})
+   :id id
+   :upvotes #{}
+   :downvotes #{}})
 
 (defn room-owners []
   (->> @state vals (map :owner) set))
@@ -25,8 +44,8 @@
 (defn rooms []
   (->> @state keys set))
 
-(defn room-id->title [room-id]
-  (-> @state (get room-id) :title))
+(defn room-id->owner [room-id]
+  (-> @state (get room-id) :owner))
 
 (defn create-room
   "creates a room."
@@ -42,10 +61,12 @@
                              (init-room owner room-id)))))))
 
 (defn create-message [room-id message]
-  (swap! state
-         #(update-in % [room-id :questions]
-                     (fn [question-list] (conj question-list
-                                               (new-question message))))))
+  (let [message-id (str (java.util.UUID/randomUUID))]
+    (swap! state
+           #(update-in % [room-id :questions]
+                       (fn [question-list]
+                         (assoc question-list
+                           message-id (new-question message message-id)))))))
 
 (defn session->room-id [session]
   (:room-id (first (filter #(= (-> :owner %) session) (vals @state)))))

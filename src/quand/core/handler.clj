@@ -35,21 +35,19 @@
     (resp/redirect (str "/r/" room-id))))
 
 (defn create-message [req]
-  (def *req req)
-  (let [room-id (db/session->room-id (cookie->owner req))
+  (let [room-id (-> req :headers (get "referer") (str/split #"/") last)
         message (-> req :query-params (get "chat_message"))]
-    (def *rid room-id)
     (db/create-message room-id message)
-    (resp/redirect (str "/r/" room-id))))
+    (resp/redirect (-> req :headers (get "referer")))))
 
 (defroutes app-routes
   (GET "/" [] landing/page)
   (GET "/create" [] create-room)
   (GET "/say" [] create-message)
   (GET "/r/:room-id" [room-id] #(q-list/page % room-id))
+  (GET "/:room-id/json" [room-id] (db/->json-room room-id))
+  (GET "/state.json" [] (db/->json-state))
   (route/not-found "Not Found"))
-
-
 
 (defn owner-redirect-middleware
   "if our visitor owns a room,
@@ -92,4 +90,3 @@
   (println "NREPL Server on localhost:10101")
   (reset! server (server/run-server #'app {:port 8080}))
   (println "Started server on localhost:8080"))
-

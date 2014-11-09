@@ -3,6 +3,7 @@
             [quand.pages.template :as t]))
 
 (defn page [request]
+  (def *r request)
   (t/page
    [:div.jumbotron
     [:h2 "Welcome to quand."]
@@ -13,5 +14,3 @@
               :placeholder "pick a name"}]
      [:br]
      [:input {:type "submit" :value "Create Room."}]]]))
-
-
