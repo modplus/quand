@@ -8,10 +8,21 @@
 (defn ->json-state []
   (json/encode @state))
 
+(defn q->score [{:keys [upvotes downvotes]}]
+  (- (count upvotes) (count downvotes)))
+
+(defn map-vals [f m]
+  (def *in [f m])
+  (into {} (map (fn [[k v]] [k (f v)]) m)))
+
 (defn ->json-room [room-id]
-  (json/encode (get @state room-id
-                    {:error (str "Sorry, no room called: "
-                                 room-id)})))
+  ;; adds the scores
+  (json/encode
+   (if-let [room (get @state room-id)]
+     (assoc room :questions 
+            (map-vals #(assoc % :score (q->score %)) 
+                      (:questions room)))
+     {:error (str "Sorry, no room called: " room-id)})))
 
 (defn vote [room-id message-id user-id up-or-down]
   (swap! state
@@ -29,8 +40,6 @@
    :room-id room-id
    :questions {}})
 
-(defn q->score [{:keys [upvotes downvotes]}]
-  (- upvotes downvotes))
 
 (defn new-question [message id]
   {:message message
