@@ -1,11 +1,11 @@
 .container {
       width :100%;
-        max-width: 1200px;
+        max-width: 800px;
     position: relative;
 }
 
 body  {
-        font-size:5em;
+
 }
 
 #chat_box {
@@ -27,19 +27,20 @@ body  {
 
 .question > * {
     float: left;
-    font-size: 0.3em;
+    font-size: 1em;
     display: table-cell;
     vertical-align: middle;
 /*    padding: 0;*/
 }
 .question p{
-    padding-top: 1%;
+    padding-top: 5%;
 /*    font-size: 1em;*/
     max-width: 100%;
 }
 
 .question .button{
     float:right;
+    text-align: center;
     padding: 0 5px 0 0;
 /*    padding-right: 5px;*/
 
@@ -47,16 +48,28 @@ body  {
 }
 button:first-child{
     margin-bottom: 1em;
-    background-color: #2ecc71;
 }
 button {
+    display: block;
+    text-align: center;
     width: 100%;
-    background-color: #e74c3c;
+    padding: 0;
+}
+.btn {
+    padding: 6px 0;
 }
 
+
 .question h2{
-    font-size: 0.5em;
+    color:#446CB3;
+    font-size: 1.1em;
+    padding-left: 5px;
 }
+.btn-default{
+    margin-top: 20px;
+}
+
+
 
 
 
