@@ -1,14 +1,75 @@
 .container {
-	  width :100%;
-		max-width: 1200px;
+      width :100%;
+        max-width: 800px;
+    position: relative;
 }
 
 body  {
-		font-size:5em;
+
 }
 
 #chat_box {
-float:left;
-width:100%;
-color:red;
+    float:left;
+    width:100%;
+    color:red;
 }
+
+.question {
+    padding: 1%;
+    display: table;
+    width: 100%;
+/*   min-height: 3em;*/
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0.5em;
+    border-color: lightgrey;
+}
+
+.question > * {
+    float: left;
+    font-size: 1em;
+    display: table-cell;
+    vertical-align: middle;
+/*    padding: 0;*/
+}
+.question p{
+    padding-top: 5%;
+/*    font-size: 1em;*/
+    max-width: 100%;
+}
+
+.question .button{
+    float:right;
+    text-align: center;
+    padding: 0 5px 0 0;
+/*    padding-right: 5px;*/
+
+
+}
+button:first-child{
+    margin-bottom: 1em;
+}
+button {
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 0;
+}
+.btn {
+    padding: 6px 0;
+}
+
+
+.question h2{
+    color:#446CB3;
+    font-size: 1.1em;
+    padding-left: 5px;
+}
+.btn-default{
+    margin-top: 20px;
+}
+
+
+
+
+
