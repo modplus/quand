@@ -9,43 +9,53 @@ body  {
 }
 
 #chat_box {
-float:left;
-width:100%;
-color:red;
+    float:left;
+    width:100%;
+    color:red;
 }
 
 .question {
+    padding: 1%;
     display: table;
     width: 100%;
 /*   min-height: 3em;*/
-    border: 1px solid black;
     position: relative;
     overflow: hidden;
+    margin-bottom: 0.5em;
+    border-color: lightgrey;
 }
 
 .question > * {
     float: left;
-    font-size: 0.5em;
+    font-size: 0.3em;
     display: table-cell;
     vertical-align: middle;
 /*    padding: 0;*/
 }
 .question p{
-
-
     padding-top: 1%;
-/*    font-size: 0.3em;*/
+/*    font-size: 1em;*/
     max-width: 100%;
 }
 
 .question .button{
     float:right;
+    padding: 0 5px 0 0;
+/*    padding-right: 5px;*/
 
 
 }
+button:first-child{
+    margin-bottom: 1em;
+    background-color: #2ecc71;
+}
 button {
-    font-size: 0.5em;
     width: 100%;
+    background-color: #e74c3c;
+}
+
+.question h2{
+    font-size: 0.5em;
 }
 
 
