@@ -69,18 +69,10 @@
         (resp/redirect (str "/r/" room-id)))
       (handler req))))
 
-(defn def-last-request
-  [handler]
-  (fn [req]
-    (def *r req)
-    (clojure.pprint/pprint req)
-    (handler req)))
-
 (def app
   (-> (wrap-defaults app-routes config/defaults)
       ;; owner-redirect-middleware
       prone/wrap-exceptions
-      ;; def-last-request
       ))
 
 (defn stop-server []

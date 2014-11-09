@@ -1,6 +1,6 @@
 (ns quand.config)
 
-(def default
+(def defaults
   {:params    {:urlencoded true
                :multipart  true
                :nested     true
