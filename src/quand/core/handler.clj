@@ -3,6 +3,7 @@
             [compojure.core :refer :all]
             [compojure.route :as route]
             [quand.db :as db]
+            [quand.config :as config]
             [quand.pages.landing :as landing]
             [quand.pages.template :as t]
             [ring.middleware.defaults :refer [wrap-defaults
@@ -48,10 +49,11 @@
   (GET "/" [] landing/page)
   (GET "/create" [] create-room)
   (GET "/say" [] create-message)
+  (GET "/r/json/:room-id" [room-id] (db/->json-room room-id))
   (GET "/r/:room-id" [room-id] #(q-list/page % room-id))
-  (GET "/json/:room-id" [room-id] (db/->json-room room-id))
   (GET "/json" [] (db/->json-state))
   (POST "/kill/:room-id/:message-id" [] POST->)
+  (route/resources "/public")
   (route/not-found "Not Found"))
 
 (defn owner-redirect-middleware
@@ -75,7 +77,7 @@
     (handler req)))
 
 (def app
-  (-> (wrap-defaults app-routes site-defaults)
+  (-> (wrap-defaults app-routes config/defaults)
       ;; owner-redirect-middleware
       prone/wrap-exceptions
       ;; def-last-request

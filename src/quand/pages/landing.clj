@@ -4,8 +4,10 @@
             [ring.util.anti-forgery :refer [anti-forgery-field]]))
 
 
-
 (defn page [request]
+    (slurp "resources/index.html"))
+
+#_(defn page [request]
   (def *r request)
   (t/page
    [:div.jumbotron

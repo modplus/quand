@@ -17,11 +17,8 @@
 (defn ->json-room [room-id]
   ;; adds the scores
   (json/encode
-   (if-let [room (get @state room-id)]
-     (assoc room :questions 
-            (map-vals #(assoc % :score (q->score %)) 
-                      (:questions room)))
-     {:error (str "Sorry, no room called: " room-id)})))
+   (let [questions (vals (:questions (get @state room-id)))]
+     (map (fn [q] (assoc q :score (q->score q))) questions))))
 
 (defn init-room [owner room-id]
   {:owner owner
@@ -44,7 +41,7 @@
   (-> @state (get room-id) :owner))
 
 (defn kill [room-id message-id]
-    (swap! state
+  (swap! state
          #(update-in % [room-id :questions]
                      (fn [questions] (dissoc message-id)))))
 
