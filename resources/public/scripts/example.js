@@ -17,13 +17,22 @@ var converter = new Showdown.converter();
 var Comment = React.createClass({
   render: function() {
     var rawMarkup = converter.makeHtml(this.props.children.toString());
+    rm = rawMarkup;
     return (
-      <div className="comment">
-        <h2 className="commentAuthor">
-          {this.props.author}
+      <div className="question panel">
+        <h2 className="col-xs-2">
+          {this.props.score}
         </h2>
+        <div className="col-xs-8">
         <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+        </div>
+
+        <div className="button col-xs-2">
+        <ScoreForm onScoreSubmit={this.handleCommentSubmit} />
+        </div>
+
       </div>
+
     );
   }
 });
@@ -72,8 +81,10 @@ var CommentBox = React.createClass({
   render: function() {
     return (
       <div className="commentBox">
-        <h1>Comments</h1>
+        <h1>Room Name</h1>
         <CommentList data={this.state.data} />
+        <br/>
+        <br/>
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
     );
@@ -87,19 +98,44 @@ var CommentList = React.createClass({
         // `key` is a React-specific concept and is not mandatory for the
         // purpose of this tutorial. if you're curious, see more here:
         // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
-        <Comment author={comment.author} key={index}>
+
+        <Comment author={comment.author} key={index} score={comment.score}>
           {comment.text}
         </Comment>
+
       );
     });
     return (
       <div className="commentList">
         {commentNodes}
       </div>
+
     );
   }
 });
+var ScoreForm = React.createClass({
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var author = this.refs.author.getDOMNode().value.trim();
+    var text = this.refs.text.getDOMNode().value.trim();
 
+    if (!text || !author) {
+      return;
+    }
+    this.props.onScoreSubmit({author: author, text: text});
+  },
+  render: function() {
+    return (
+      <form className="scoreForm" onSubmit={this.handleSubmit}>
+
+
+           <button className="up btn btn-success glyphicon glyphicon-arrow-up " ></button>
+           <button className="down btn btn-danger  glyphicon glyphicon-arrow-down  " ></button>
+
+      </form>
+    );
+  }
+});
 var CommentForm = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
@@ -116,8 +152,8 @@ var CommentForm = React.createClass({
   render: function() {
     return (
       <form className="commentForm" onSubmit={this.handleSubmit}>
-        <input type="text" placeholder="Your name" ref="author" />
-        <input type="text" placeholder="Say something..." ref="text" />
+        <input type="text" placeholder="ID" ref="author" />
+        <textarea cols="40" rows="5" placeholder="Say something..." ref="text" />
         <input type="submit" value="Post" />
       </form>
     );
@@ -125,6 +161,6 @@ var CommentForm = React.createClass({
 });
 
 React.renderComponent(
-  <CommentBox url="comments.json" pollInterval={2000} />,
+  <CommentBox url="public/comments.json" pollInterval={2000} />,
   document.getElementById('content')
 );
