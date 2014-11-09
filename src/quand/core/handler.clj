@@ -31,6 +31,7 @@
        (catch Exception e nil)))
 
 (defn create-room [req]
+  (def *req req)
   (let [room-id (req->room-id req)]
     (db/create-room (req->session req) room-id)
     (resp/redirect (str "/r/" room-id))))

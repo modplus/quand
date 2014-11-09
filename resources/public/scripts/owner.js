@@ -18,8 +18,7 @@ var ScoreForm = React.createClass({
   render: function() {
     return (
       <form className="scoreForm" onSubmit={this.handleSubmit}>
-           <button className="up btn btn-success glyphicon glyphicon-arrow-up " ></button>
-           <button className="down btn btn-danger  glyphicon glyphicon-arrow-down  " ></button>
+            <button className="btn btn-default glyphicon remove glyphicon-remove"></button>						
       </form>
     );
   }
