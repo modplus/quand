@@ -40,13 +40,18 @@
     (db/create-message room-id message)
     (resp/redirect (-> req :headers (get "referer")))))
 
+(defn POST-> [& p]
+  (let [params (dissoc (:params (first p)) :__anti-forgery-token)]
+    (def *p p)))
+
 (defroutes app-routes
   (GET "/" [] landing/page)
   (GET "/create" [] create-room)
   (GET "/say" [] create-message)
   (GET "/r/:room-id" [room-id] #(q-list/page % room-id))
-  (GET "/:room-id/json" [room-id] (db/->json-room room-id))
-  (GET "/state.json" [] (db/->json-state))
+  (GET "/json/:room-id" [room-id] (db/->json-room room-id))
+  (GET "/json" [] (db/->json-state))
+  (POST "/kill/:room-id/:message-id" [] POST->)
   (route/not-found "Not Found"))
 
 (defn owner-redirect-middleware
@@ -66,13 +71,15 @@
   [handler]
   (fn [req]
     (def *r req)
+    (clojure.pprint/pprint req)
     (handler req)))
 
 (def app
   (-> (wrap-defaults app-routes site-defaults)
       ;; owner-redirect-middleware
       prone/wrap-exceptions
-      def-last-request))
+      ;; def-last-request
+      ))
 
 (defn stop-server []
   (when-not (nil? @server)
@@ -85,8 +92,7 @@
   ;; The #' is useful when you want to hot-reload code
   ;; You may want to take a look: https://github.com/clojure/tools.namespace
   ;; and http://http-kit.org/migration.html#reload
-  (nrepl/start-server :port 10101
-                      :handler cider-nrepl-handler)
+  (nrepl/start-server :port 10101 :handler cider-nrepl-handler)
   (println "NREPL Server on localhost:10101")
   (reset! server (server/run-server #'app {:port 8080}))
   (println "Started server on localhost:8080"))

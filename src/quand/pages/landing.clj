@@ -1,6 +1,9 @@
 (ns quand.pages.landing
   (:require [hiccup.core :as html]
-            [quand.pages.template :as t]))
+            [quand.pages.template :as t]
+            [ring.util.anti-forgery :refer [anti-forgery-field]]))
+
+
 
 (defn page [request]
   (def *r request)
@@ -13,4 +16,9 @@
               :name "title"
               :placeholder "pick a name"}]
      [:br]
-     [:input {:type "submit" :value "Create Room."}]]]))
+     [:input {:type "submit" :value "Create Room."}]]
+    [:span "test:"]
+    [:form {:action "/what" :method "POST"}
+     (anti-forgery-field)
+     [:input {:type "text" :name "title"}]
+     [:input {:type "submit" :value "hitting why"}]]]))

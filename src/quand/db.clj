@@ -12,7 +12,6 @@
   (- (count upvotes) (count downvotes)))
 
 (defn map-vals [f m]
-  (def *in [f m])
   (into {} (map (fn [[k v]] [k (f v)]) m)))
 
 (defn ->json-room [room-id]
@@ -24,22 +23,10 @@
                       (:questions room)))
      {:error (str "Sorry, no room called: " room-id)})))
 
-(defn vote [room-id message-id user-id up-or-down]
-  (swap! state
-         #(update-in % [room-id :questions message-id up-or-down]
-                     (fn [votes] (conj votes user-id)))))
-
-(defn downvote [room-id message-id user-id]
-  (vote [room-id message-id user-id :downvotes]))
-
-(defn upvote [room-id message-id user-id]
-  (vote [room-id message-id user-id :upvotes]))
-
 (defn init-room [owner room-id]
   {:owner owner
    :room-id room-id
    :questions {}})
-
 
 (defn new-question [message id]
   {:message message
@@ -55,6 +42,22 @@
 
 (defn room-id->owner [room-id]
   (-> @state (get room-id) :owner))
+
+(defn kill [room-id message-id]
+    (swap! state
+         #(update-in % [room-id :questions]
+                     (fn [questions] (dissoc message-id)))))
+
+(defn vote [room-id message-id user-id up-or-down]
+  (swap! state
+         #(update-in % [room-id :questions message-id up-or-down]
+                     (fn [votes] (conj votes user-id)))))
+
+(defn downvote [room-id message-id user-id]
+  (vote [room-id message-id user-id :downvotes]))
+
+(defn upvote [room-id message-id user-id]
+  (vote [room-id message-id user-id :upvotes]))
 
 (defn create-room
   "creates a room."
