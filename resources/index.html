@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="/freelancer.css" rel="stylesheet" type="text/css">
-  <link href="/style.css" rel="stylesheet" type="text/css">
-  <script src="http://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript">
-  </script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js" type="text/javascript">
-  </script>
+<head>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!--    <link href="public/freelancer.css" rel="stylesheet" type="text/css">-->
+    <link href="public/style.css" rel="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript">
+    </script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js" type="text/javascript">
+    </script>
+</head>
+<body>
+     <nav class="navbar navbar-default navbar-fixed-top glass" role="navigation">
   <div class="container">
-    <div class="jumbotron">
-      <h2>Welcome to quand.</h2>
-      <form action="/create" method="GET">
-        <label>Name your room:</label>
-        <input name="title" placeholder="pick a name" type="text">
-        <br>
-        <input type="submit" value="Create Room.">
-      </form>
-    </div>
+    Quand- simply the best thing ever
   </div>
+</nav>
+      <div class="container">
+        <div class="jumbotron">
+          <h2>Welcome to quand.</h2>
+          <p>Quand is an easy way to ask and organize questions for your event</p>
+          <form action="/create" method="GET">
+            <div class="form-group">
+                <label>Name your room:</label>
+                <input name="title" placeholder="pick a name" type="text">
+            </div>
+            <input class="make-room btn btn-default" type="submit" value="Create Room">
+          </form>
+        </div>
+      </div>
+</body>
 </html>

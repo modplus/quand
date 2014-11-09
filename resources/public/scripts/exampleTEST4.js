@@ -26,11 +26,11 @@ var Comment = React.createClass({
         <div className="col-xs-8">
         <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
         </div>
-        
+
         <div className="button col-xs-2">
         <ScoreForm onScoreSubmit={this.handleCommentSubmit} />
-        </div> 
-        
+        </div>
+
       </div>
 
     );
@@ -98,16 +98,16 @@ var CommentList = React.createClass({
         // `key` is a React-specific concept and is not mandatory for the
         // purpose of this tutorial. if you're curious, see more here:
         // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
-        
+
         <Comment author={comment.author} key={index} score={comment.score}>
           {comment.text}
         </Comment>
-		
+
       );
     });
     return (
       <div className="commentList">
-        {commentNodes}  
+        {commentNodes}
       </div>
 
     );
@@ -118,7 +118,7 @@ var ScoreForm = React.createClass({
     e.preventDefault();
     var author = this.refs.author.getDOMNode().value.trim();
     var text = this.refs.text.getDOMNode().value.trim();
-    
+
     if (!text || !author) {
       return;
     }
@@ -127,11 +127,11 @@ var ScoreForm = React.createClass({
   render: function() {
     return (
       <form className="scoreForm" onSubmit={this.handleSubmit}>
-        
-        
+
+
            <button className="up btn btn-success glyphicon glyphicon-arrow-up " ></button>
            <button className="down btn btn-danger  glyphicon glyphicon-arrow-down  " ></button>
-        
+
       </form>
     );
   }
@@ -161,6 +161,6 @@ var CommentForm = React.createClass({
 });
 
 React.renderComponent(
-  <CommentBox url="comments.json" pollInterval={2000} />,
+  <CommentBox url="public/comments.json" pollInterval={2000} />,
   document.getElementById('content')
 );
