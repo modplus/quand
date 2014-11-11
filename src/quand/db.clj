@@ -55,10 +55,10 @@
                      (fn [votes] (conj votes user-id)))))
 
 (defn downvote [room-id message-id user-id]
-  (vote [room-id message-id user-id :downvotes]))
+  (vote room-id message-id user-id :downvotes))
 
 (defn upvote [room-id message-id user-id]
-  (vote [room-id message-id user-id :upvotes]))
+  (vote room-id message-id user-id :upvotes))
 
 (defn create-room
   "creates a room."

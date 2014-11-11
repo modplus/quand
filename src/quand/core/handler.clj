@@ -35,7 +35,7 @@
         session (or (req->session req)
                     (db/create-user))]
     (db/create-room session room-id)
-    (merge 
+    (merge
      {:cookies {:value session}}
      (resp/redirect (str "/r/" room-id)))))
 
@@ -52,8 +52,11 @@
   (GET "/r/json/:room-id" [room-id] (db/->json-room room-id))
   (GET "/r/:room-id" [room-id] #(q-list/page % room-id))
   (POST "/delete/:message-id" [message-id] (db/kill message-id))
-  (POST "/upvote/:message-id/:user-id" [message-id] (db/kill message-id))
-  (POST "/downvote/:message-id/:user-id" [message-id] (db/kill message-id))  
+  (POST "/upvote/:room-id/:message-id/:user-id" [room-id message-id user-id]
+        (def *rmu [room-id message-id user-id])
+        (db/upvote room-id message-id user-id))
+  (POST "/downvote/:room-id/:message-id/:user-id" [room-id message-id user-id]
+        (db/downvote room-id message-id user-id))
   (GET "/json" [] (db/->json-state))
   (route/resources "/public")
   (route/not-found "Not Found"))

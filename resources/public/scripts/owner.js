@@ -9,20 +9,14 @@ var ScoreForm = React.createClass({
     e.preventDefault();
     // this.props.url is the delete post url.
     return $.post( this.props.url, function( data ) {
-//    alert( "Data Loaded: " + data );
-});
-//    }
-//    this.props.onScoreSubmit({author: "", text: text});
+    });
   },
   render: function() {
-        me = this.refs;
-        console.log();
     return (
-      <form className="scoreForm" onSubmit={this.handleSubmit}>
-            <button className="btn btn-default glyphicon remove glyphicon-remove">
-
+        <form className="scoreForm" onSubmit={this.handleSubmit}>
+        <button className="btn btn-default glyphicon remove glyphicon-remove">
         </button>
-      </form>
+        </form>
     );
   }
 });
@@ -42,11 +36,11 @@ var CommentForm = React.createClass({
   },
   render: function() {
     return (
-      <form className="commentForm" onSubmit={this.handleSubmit}>
+        <form className="commentForm" onSubmit={this.handleSubmit}>
         <input type="text" placeholder="ID" ref="author" />
         <textarea cols="40" rows="5" placeholder="Say something..." ref="text" />
         <input type="submit" value="Post" />
-      </form>
+        </form>
     );
   }
 });
@@ -54,19 +48,19 @@ var CommentForm = React.createClass({
 var Comment = React.createClass({
   render: function() {
     var rawMarkup = converter.makeHtml(this.props.children.toString());
-      var delete_url = "/delete/" + this.props.id;
+    var delete_url = "/delete/" + this.props.id;
     return (
-      <div className="question panel">
+        <div className="question panel">
         <h2 className="col-xs-2">
-          {this.props.score}
-        </h2>
+        {this.props.score}
+      </h2>
         <div className="col-xs-8">
         <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
         </div>
         <div className="button col-xs-2">
         <ScoreForm onScoreSubmit={this.handleCommentSubmit} url={delete_url} />
         </div>
-      </div>
+        </div>
     );
   }
 });
@@ -78,13 +72,13 @@ var CommentList = React.createClass({
         // `key` is a React-specific concept and is not mandatory for the
         // purpose of this tutorial. if you're curious, see more here:
         // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
-        <Comment key={index} score={comment.score} id={comment.id}>
+          <Comment key={index} score={comment.score} id={comment.id}>
           {comment.message}
         </Comment>
       );
     });
     return (
-      <div className="commentList">
+        <div className="commentList">
         {commentNodes}
       </div>
 
@@ -135,11 +129,11 @@ var CommentBox = React.createClass({
   },
   render: function() {
     return (
-      <div className="commentBox">
+        <div className="commentBox">
         <h1>{this.props.room}</h1>
         <CommentList data={this.state.data} />
         <br/>
-      </div>
+        </div>
     );
   }
 });
@@ -148,6 +142,6 @@ room_id = document.URL.split("/").pop();
 json_url = "json/" + room_id;
 
 React.renderComponent(
-  <CommentBox url={json_url} room={room_id} pollInterval={2000} />,
+    <CommentBox url={json_url} room={room_id} pollInterval={2000} />,
   document.getElementById('content')
 );
