@@ -69,6 +69,9 @@
                              room-id
                              (init-room owner room-id)))))))
 
+(defn create-user []
+  (str (java.util.UUID/randomUUID)))
+
 (defn create-message [room-id message]
   (let [message-id (str (java.util.UUID/randomUUID))]
     (swap! state

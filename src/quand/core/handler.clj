@@ -31,20 +31,19 @@
        (catch Exception e nil)))
 
 (defn create-room [req]
-  (def *req req)
-  (let [room-id (req->room-id req)]
-    (db/create-room (req->session req) room-id)
-    (resp/redirect (str "/r/" room-id))))
+  (let [room-id (req->room-id req)
+        session (or (req->session req)
+                    (db/create-user))]
+    (db/create-room session room-id)
+    (merge 
+     {:cookies {:value session}}
+     (resp/redirect (str "/r/" room-id)))))
 
 (defn create-message [req]
   (let [room-id (-> req :headers (get "referer") (str/split #"/") last)
         message (-> req :query-params (get "chat_message"))]
     (db/create-message room-id message)
     (resp/redirect (-> req :headers (get "referer")))))
-
-(defn POST-> [& p]
-  (let [params (dissoc (:params (first p)) :__anti-forgery-token)]
-    (def *p p)))
 
 (defroutes app-routes
   (GET "/" [] landing/page)
@@ -53,7 +52,6 @@
   (GET "/r/json/:room-id" [room-id] (db/->json-room room-id))
   (GET "/r/:room-id" [room-id] #(q-list/page % room-id))
   (GET "/json" [] (db/->json-state))
-  (POST "/kill/:room-id/:message-id" [] POST->)
   (route/resources "/public")
   (route/not-found "Not Found"))
 

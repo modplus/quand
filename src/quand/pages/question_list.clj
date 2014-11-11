@@ -34,10 +34,12 @@
      [:input {:type "submit" :value "Ask Carefully."}]]]))
 
 (defn page [req room-id]
+  (def *req req)
   (if-not ((db/rooms) room-id)
     (resp/not-found (str room-id " doesn't appear to exist."))
     (let [owner-from-db (db/room-id->owner room-id)
-          owner-from-req (-> req :cookies (get "ring-session") :value)
+          owner-from-req (-> req :cookies (get "value") :value)
           owner? (= owner-from-db owner-from-req)]
+      (def *aye [owner-from-db owner-from-req])
       (if owner? (owner-view) (audience-view)))))
 

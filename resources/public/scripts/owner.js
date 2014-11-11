@@ -7,7 +7,7 @@ var converter = new Showdown.converter();
 var ScoreForm = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
-    var author = this.refs.author.getDOMNode().value.trim();
+
     var text = this.refs.text.getDOMNode().value.trim();
 
     if (!text) {
@@ -16,10 +16,10 @@ var ScoreForm = React.createClass({
     this.props.onScoreSubmit({author: "", text: text});
   },
   render: function() {
+		me = this.refs;
     return (
       <form className="scoreForm" onSubmit={this.handleSubmit}>
-            <button className="btn btn-default glyphicon remove glyphicon-remove"></button>						
-      </form>
+            <button className="btn btn-default glyphicon remove glyphicon-remove"></button>						  </form>
     );
   }
 });
@@ -51,7 +51,6 @@ var CommentForm = React.createClass({
 var Comment = React.createClass({
   render: function() {
     var rawMarkup = converter.makeHtml(this.props.children.toString());
-    rm = rawMarkup;
     return (
       <div className="question panel">
         <h2 className="col-xs-2">
