@@ -5,6 +5,7 @@
 
 
 (defn page [request]
+  (def *req request)
     (slurp "resources/index.html"))
 
 #_(defn page [request]

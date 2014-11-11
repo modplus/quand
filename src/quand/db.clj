@@ -40,10 +40,14 @@
 (defn room-id->owner [room-id]
   (-> @state (get room-id) :owner))
 
-(defn kill [room-id message-id]
+(defn kill-in-room [room-id message-id]
   (swap! state
          #(update-in % [room-id :questions]
-                     (fn [questions] (dissoc message-id)))))
+                     (fn [qid->q] (dissoc qid->q message-id)))))
+
+(defn kill [message-id]
+  (doseq [room (rooms)]
+    (kill-in-room room message-id)))
 
 (defn vote [room-id message-id user-id up-or-down]
   (swap! state
