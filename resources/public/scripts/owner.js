@@ -7,19 +7,22 @@ var converter = new Showdown.converter();
 var ScoreForm = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
-
-    var text = this.refs.text.getDOMNode().value.trim();
-
-    if (!text) {
-      return;
-    }
-    this.props.onScoreSubmit({author: "", text: text});
+    // this.props.url is the delete post url.
+    return $.post( this.props.url, function( data ) {
+//    alert( "Data Loaded: " + data );
+});
+//    }
+//    this.props.onScoreSubmit({author: "", text: text});
   },
   render: function() {
-		me = this.refs;
+        me = this.refs;
+        console.log();
     return (
       <form className="scoreForm" onSubmit={this.handleSubmit}>
-            <button className="btn btn-default glyphicon remove glyphicon-remove"></button>						  </form>
+            <button className="btn btn-default glyphicon remove glyphicon-remove">
+
+        </button>
+      </form>
     );
   }
 });
@@ -51,6 +54,7 @@ var CommentForm = React.createClass({
 var Comment = React.createClass({
   render: function() {
     var rawMarkup = converter.makeHtml(this.props.children.toString());
+      var delete_url = "/delete/" + this.props.id;
     return (
       <div className="question panel">
         <h2 className="col-xs-2">
@@ -60,7 +64,7 @@ var Comment = React.createClass({
         <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
         </div>
         <div className="button col-xs-2">
-        <ScoreForm onScoreSubmit={this.handleCommentSubmit} />
+        <ScoreForm onScoreSubmit={this.handleCommentSubmit} url={delete_url} />
         </div>
       </div>
     );
@@ -74,7 +78,7 @@ var CommentList = React.createClass({
         // `key` is a React-specific concept and is not mandatory for the
         // purpose of this tutorial. if you're curious, see more here:
         // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
-        <Comment key={index} score={comment.score}>
+        <Comment key={index} score={comment.score} id={comment.id}>
           {comment.message}
         </Comment>
       );
