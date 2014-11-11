@@ -82,12 +82,17 @@ button {
 }
 
 .jumbotron {
-    margin-top: 60px;
+    margin-top: 70px;
     background-color: #C5EFF7;
     overflow: hidden;
 }
 .navbar-default {
     background-color: #81CFE0;
+    color: white;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+.navbar h1 {
+    font-size: 28px;
 }
 form {
     font-size: 1.5em;
