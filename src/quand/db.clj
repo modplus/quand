@@ -73,6 +73,7 @@
                              room-id
                              (init-room owner room-id)))))))
 
+
 (defn create-user []
   (str (java.util.UUID/randomUUID)))
 
@@ -87,7 +88,13 @@
 (defn session->room-id [session]
   (:room-id (first (filter #(= (-> :owner %) session) (vals @state)))))
 
+(defn assoc-cookie [resp session-id]
+  (merge resp {:cookies {"value" {:value session-id}}}))
+
 (comment
   ;; reset rooms
   (swap! state (fn [st] {}))
   (room-owners))
+
+
+(create-user)

@@ -45,15 +45,23 @@
     (db/create-message room-id message)
     (resp/redirect (-> req :headers (get "referer")))))
 
+(defn header->cookie [req]
+  (-> req :headers (get "cookie") (str/split #"=") last))
+
+(defn ensure-cookie [req room-id]
+  (let [session (or (-> req :cookies (get "value") :value) (db/create-user))]
+    (-> (resp/response (q-list/page req room-id))
+        (db/assoc-cookie session)
+        (assoc-in [:headers "Content-Type"] "text/html; charset-utf-8"))))
+
 (defroutes app-routes
   (GET "/" [] landing/page)
   (GET "/create" [] create-room)
   (GET "/say" [] create-message)
   (GET "/r/json/:room-id" [room-id] (db/->json-room room-id))
-  (GET "/r/:room-id" [room-id] #(q-list/page % room-id))
+  (GET "/r/:room-id" [room-id] #(ensure-cookie % room-id))
   (POST "/delete/:message-id" [message-id] (db/kill message-id))
   (POST "/upvote/:room-id/:message-id/:user-id" [room-id message-id user-id]
-        (def *rmu [room-id message-id user-id])
         (db/upvote room-id message-id user-id))
   (POST "/downvote/:room-id/:message-id/:user-id" [room-id message-id user-id]
         (db/downvote room-id message-id user-id))
@@ -74,11 +82,18 @@
         (resp/redirect (str "/r/" room-id)))
       (handler req))))
 
+(defn def-req-resp
+  [handler]
+  (fn [req]
+     (def *req req)
+     (def *resp (handler req))
+     *resp))
+
 (def app
   (-> (wrap-defaults app-routes config/defaults)
       ;; owner-redirect-middleware
       prone/wrap-exceptions
-      ))
+      def-req-resp))
 
 (defn stop-server []
   (when-not (nil? @server)

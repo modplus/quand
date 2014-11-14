@@ -52,10 +52,12 @@ var ScoreForm = React.createClass({
 var Comment = React.createClass({
   render: function() {
     var rawMarkup = converter.makeHtml(this.props.children.toString());
-		var message_id = this.props.id;
-		var user_id = document.cookie.split("=")[1];
-		var down_url = "/downvote/" + room_id + "/" + message_id + "/" + user_id;
-		var up_url =   "/upvote/" + room_id + "/" + message_id + "/" + user_id;
+    var message_id = this.props.id;
+    var user_id = document.cookie.split("=")[2] || document.cookie.split("=")[1];
+		console.log (message_id);
+		console.log (user_id);
+    var down_url = "/downvote/" + room_id + "/" + message_id + "/" + user_id;
+    var up_url =   "/upvote/"  + room_id + "/" + message_id + "/" + user_id;
     return (
         <div className="question panel">
         <h2 className="col-xs-2">
