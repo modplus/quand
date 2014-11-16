@@ -17,10 +17,16 @@
 (defn ->json-room [room-id]
   ;; adds the scores
   (json/encode
-   (let [questions (vals (:questions (get @state room-id)))]
-     (map (fn [q] (assoc q :score (q->score q))) questions))))
+   (let [questions (-> @state (get room-id) :questions vals)
+         q-and-score  (map #(assoc % :score (q->score %)) questions)]
+     (reverse (sort-by :score q-and-score)))))
 
-(defn init-room [owner room-id]
+
+(defn init-room
+  "owner is the uuid for the room-creator
+  room-id is the uuid for the room
+  questions is a map from qid->question"
+  [owner room-id]
   {:owner owner
    :room-id room-id
    :questions {}})
@@ -96,5 +102,3 @@
   (swap! state (fn [st] {}))
   (room-owners))
 
-
-(create-user)

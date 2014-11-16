@@ -41,5 +41,4 @@
           owner-from-req (-> req :cookies (get "value") :value)
           owner? (= owner-from-db owner-from-req)]
       (def *aye [owner-from-db owner-from-req])
-      (if owner? () (owner-view) (audience-view)))))
-
+      (if owner? (owner-view) (audience-view)))))
